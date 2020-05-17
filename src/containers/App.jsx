@@ -5,45 +5,49 @@ import Categories from '../components/Categories.jsx';
 import CarouselItem from '../components/CarouselItem.jsx';
 import Carousel from '../components/Carousel.jsx';
 import Footer from '../components/Footer.jsx';
+import useInitialState from '../hooks/useInitialState.js';
 
 import '../assets/styles/App.scss';
 
+const API = 'http://localhost:3000/initIalState';
+
 const App = () => {
+  const initialState = useInitialState(API);
+  console.log(initialState);
+
   return (
     <div className='App'>
       <Header />
       <Search />
 
-      <Categories title='Mi lista'>
-        <Carousel>
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-        </Carousel>
-      </Categories>
+      {
+        initialState.mylist.length > 0 &&
+        (
+          <Categories title='Mi lista'>
+            <Carousel>
+              <CarouselItem />
+            </Carousel>
+          </Categories>
+        )
+      }
 
       <Categories title='Tendencias'>
         <Carousel>
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
+          {
+            initialState.trends.map((item) => (
+              <CarouselItem key={item.id} {...item} />
+            ))
+          }
         </Carousel>
       </Categories>
 
       <Categories title='Videos originales'>
         <Carousel>
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
-          <CarouselItem />
+          {
+            initialState.originals.map((item) => (
+              <CarouselItem key={item.id} {...item} />
+            ))
+          }z
         </Carousel>
       </Categories>
 
